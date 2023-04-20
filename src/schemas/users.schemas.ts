@@ -2,10 +2,10 @@ import {z} from 'zod'
 const userSchema=z.object({
 id: z.number(),
 name: z.string(),
-email: z.string.email(),
-password: z.string.min(120),
-admin:z.boolean,
-active: z.boolean 
+email: z.string().email(),
+password: z.string().max(120),
+admin:z.boolean().default(false),
+active: z.boolean().default(true)
 })
 
 const requestUserSchema= userSchema.omit({id:true})

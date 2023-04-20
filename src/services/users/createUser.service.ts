@@ -2,6 +2,7 @@ import { QueryResult } from "pg";
 import { TUserRequest, TuserResponse } from "../../interfaces/users.interfaces";
 import { responseUserSchema } from "../../schemas/users.schemas";
 import { client } from "../../database";
+import * as bcrypt from "bcryptjs";
 
 const createUsersService = async(
     userData:TUserRequest

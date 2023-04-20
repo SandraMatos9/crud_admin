@@ -1,5 +1,4 @@
-import { NextFunction, Response } from "express";
-import { request } from "http";
+import { NextFunction, Response,request } from "express";
 import { QueryConfig, QueryResult } from "pg";
 import { client } from "../database";
 import { AppError } from "../error";
@@ -9,9 +8,9 @@ const idUserMiddlewareExists = async(
     response:Response,
     next:NextFunction
 
-):Promisse<Response|void>=>{
+):Promise<Response|void>=>{
 
-    const userId:number=parseInt(req.params.id)
+    const userId:number=parseInt(request.params.id)
     const queryString:string=`
     SELECT
     *
@@ -37,4 +36,4 @@ const idUserMiddlewareExists = async(
     return next()
 
 }
-export default idUserMiddlewareExists
+export default {idUserMiddlewareExists}

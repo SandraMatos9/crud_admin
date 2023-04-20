@@ -41,5 +41,5 @@ const emailUserExistsMiddleware = async (
             })
             
         }
-
-export default emailUserExistsMiddleware
+    }
+export default {emailUserExistsMiddleware}
