@@ -37,4 +37,4 @@ const idUserMiddlewareExists = async(
     return next()
 
 }
-export default {idUserMiddlewareExists}
+export  {idUserMiddlewareExists}

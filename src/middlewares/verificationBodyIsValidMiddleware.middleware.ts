@@ -1,4 +1,4 @@
-import {NextFunction, Request} from 'express'
+import {NextFunction, Request,Response} from 'express'
 import { ZodTypeAny } from 'zod'
 const verificationBodyIsValidMiddleware = (schema: ZodTypeAny ) =>(
     req:Request,
@@ -14,4 +14,4 @@ const verificationBodyIsValidMiddleware = (schema: ZodTypeAny ) =>(
 
 
 
-export default verificationBodyIsValidMiddleware
+export  {verificationBodyIsValidMiddleware}

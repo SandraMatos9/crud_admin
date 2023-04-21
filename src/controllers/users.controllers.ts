@@ -45,6 +45,7 @@ const idUserController= async (
  ):Promise<Response> =>{
 const userId:number=parseInt(request.params.id)
 const userData:TUserUpdateRequest=(req.body)
+
 const updateUser = await updateUserService(userId,userData)
 return response.json(updateUser)
 

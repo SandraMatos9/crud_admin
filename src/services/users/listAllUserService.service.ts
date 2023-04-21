@@ -4,6 +4,7 @@ import { client } from "../../database";
 import { AppError } from "../../error";
 import jwt from "jsonwebtoken";
 import "dotenv/config"
+import { requestAllUsersSchema } from "../../schemas/users.schemas";
 
 const listAllUserService = async(
     // token:string|undefined
@@ -35,6 +36,7 @@ const listAllUserService = async(
     const queryResult:QueryResult<TUserResponse> = await client.query(
         queryString
     );
+    const users: TUserResponse[]= requestAllUsersSchema.parse(queryResult.rows)
     return queryResult.rows;
 
 };

@@ -10,7 +10,7 @@ const createUsersService = async(
 ): Promise<TUserResponse> =>{
 
     userData.password = await bcrypt.hash(userData.password,20);
-    
+
     const queryString:string = format(
        `
        INSERT INTO
