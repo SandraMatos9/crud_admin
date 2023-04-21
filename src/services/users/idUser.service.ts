@@ -1,7 +1,7 @@
-import { TUser,TuserResponse } from "../../interfaces/users.interfaces";
+import { TUser,TUserResponse } from "../../interfaces/users.interfaces";
 import { responseUserSchema } from "../../schemas/users.schemas";
 
-const idUserService = async (user:TUser):Promise<TuserResponse> =>{
+const idUserService = async (user:TUser):Promise<TUserResponse> =>{
     const userResponse = responseUserSchema.parse(user)
     return userResponse
 }

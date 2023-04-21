@@ -1,7 +1,8 @@
-import { NextFunction, Response,request } from "express";
+import { NextFunction, Response,Request } from "express";
 import { QueryConfig, QueryResult } from "pg";
 import { client } from "../database";
 import { AppError } from "../error";
+import { TUser } from "../interfaces/users.interfaces";
 
 const idUserMiddlewareExists = async(
     request:Request,
@@ -23,10 +24,10 @@ const idUserMiddlewareExists = async(
 
     const queryConfig:QueryConfig={
         text:queryString,
-        value:[userId],
+        values:[userId],
     }
 
-    const queryResult:QueryResult<TUser>= await client.queryConfig
+    const queryResult:QueryResult<TUser>= await client.query(queryConfig)
 
     if(queryResult.rowCount===0){
         throw new AppError('User not found',404)

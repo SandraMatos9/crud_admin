@@ -1,39 +1,27 @@
-import { NextFunction } from "Express"
-import { QueryConfig } from "pg"
-import { client } from "../database"
+import { NextFunction,Request,Response } from "express"
 import { AppError } from "../error"
+import jwt from "jsonwebtoken"
+
 
 const tokenUserExistsMiddlewate = async(
-    request:Request,
-    response:Response,
+    req:Request,
+    res:Response,
     next:NextFunction
-
 ):Promise<Response|void>=>{
-
-    const userId:number=parseInt(request.params.id)
-    const queryString:string=`
-    SELECT
-    *
-    FROM
-        users
-    WHERE
-        id=$1;
     
-    `
-
-    const queryConfig:QueryConfig={
-        text:queryString,
-        value:[userId],
+    let token = req.headers.authorization
+    if(!token){
+        throw new AppError("Token is missing!",401)
     }
+        token= token.split(" ")[1]
 
-    const queryResult:QueryResult<TUser>= await client.queryConfig
+    jwt.verify(token,process.env.SECRET_KEY!,(err:any,decoded:any)=>{
+        if(err){
+            throw new AppError(err.message,403)
+        }
+        res.locals.id= decoded.id
+    })
 
-    if(queryResult.rowCount===0){
-        throw new AppError('User not found',404)
-    }
-
-    response.locals.user=queryResult.rows[0]
-    return next()
-
+  
 }
 export{tokenUserExistsMiddlewate}

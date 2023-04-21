@@ -1,15 +1,14 @@
 import { Request, Response, request, response} from 'express';
-import createUsersService from '../services/createUser.service.ts.js';
-import listUserService from '../services/listUsers.services.js';
-import { idUserService } from '../services/idUser.services.js';
-import { any } from 'zod';
 import { requestUserSchema } from '../schemas/users.schemas.js';
-import { TUserRequest } from '../interfaces/users.interfaces.js';
+import { TUserRequest, TUserResponse, TUserUpdateRequest } from '../interfaces/users.interfaces.js';
+import createUsersService from '../services/users/createUser.service.js';
+import listAllUserService from '../services/users/listAllUserService.service.js';
+import updateUserService from '../services/users/updateUser.service.js';
 
 const createUsersController = async (req:Request, res:Response):Promise<Response> =>{
 
-    const userData:TuserRequest=requestUserSchema.parse(req.body)
-    const newUser:TuserResponse = await createUsersService(userData)
+    const userData:TUserRequest=requestUserSchema.parse(req.body)
+    const newUser:TUserResponse = await createUsersService(userData)
     return res.status(201).json(newUser)
     
  
@@ -23,7 +22,7 @@ const listUserController = async (
      res:Response
      ):Promise<Response> =>{
      
-        const users = await listUserService
+        const users = await listAllUserService()
         return res.json('users')
 
 }
@@ -46,10 +45,10 @@ const idUserController= async (
  ):Promise<Response> =>{
 const userId:number=parseInt(request.params.id)
 const userData:TUserUpdateRequest=(req.body)
-const updateUser = await updateUsersService(userId,userData)
+const updateUser = await updateUserService(userId,userData)
 return response.json(updateUser)
 
 }
  
-const 
+
 export{createUsersController,listUserController,idUserController,updateUserController}

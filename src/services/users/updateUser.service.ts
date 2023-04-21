@@ -1,10 +1,12 @@
 import { QueryConfig, QueryResult } from "pg";
-import { TUserRequest, TuserResponse } from "../../interfaces/users.interfaces";
+import { TUserRequest, TUserResponse, TUserUpdateRequest } from "../../interfaces/users.interfaces";
+import { client } from "../../database";
+import format from "pg-format";
 
 const updateUserService= async( 
     userId:number, 
     userData:TUserUpdateRequest
-    ):Promisse<TuserResponse> =>{
+    ):Promise<TUserResponse> =>{
         const queryString:string = format(
             `
             UPDATE 

@@ -5,7 +5,7 @@ import { TUser } from "../../interfaces/users.interfaces";
 import format from "pg-format";
 import { TLoginRequest, TLoginResponse } from "../../interfaces/login.interfaces";
 import * as bcrypt from "bcryptjs";
-
+import jwt from "jsonwebtoken"
 
 const createLoginUser= async(
     payload:TLoginRequest
@@ -40,6 +40,20 @@ const createLoginUser= async(
         throw new AppError ("Wrong email/password",401)
     }
 
+    const token:string = jwt.sign({
+        id: user.id,
+        admin: user.admin
+    },
+   process.env.SECRET_KEY!,
+      {
+        expiresIn:'1d',
+        subject:user.id.toString(),
+      }
 
+    )
+
+    return {token:token}
 
 }
+
+export{createLoginUser}

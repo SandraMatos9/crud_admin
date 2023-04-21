@@ -1,14 +1,14 @@
-import { TLoginRequest, TLoginResponse } from "../interfaces/login.interfaces"
-import { requestUserSchema } from "../schemas/users.schemas"
+import { Request,Response } from "express"
+import {  TLoginResponse } from "../interfaces/login.interfaces"
+import { createLoginUser } from "../services/login/createLoginUser.service"
 
-const loginController = async (req:Request, res:Response):Promise<Response> =>{
 
-    const userData:TLoginRequest=requestUserSchema.parse(req.body)
-    const token:TLoginResponse= ""
-    return res.status(201).json(newUser)
-    
- 
-    
-    
+export const createLoginUserController = async(
+    req:Request,
+    res:Response)
+    :Promise<Response> =>{
+   
+    const token:TLoginResponse= await createLoginUser(req.body)
+    return res.status(200).json(token)
   
 }
