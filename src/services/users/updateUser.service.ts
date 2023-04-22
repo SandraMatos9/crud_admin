@@ -1,14 +1,18 @@
 import { QueryConfig, QueryResult } from "pg";
-import { TUserRequest, TUserResponse, TUserUpdateRequest } from "../../interfaces/users.interfaces";
+import {
+  TUserRequest,
+  TUserResponse,
+  TUserUpdateRequest,
+} from "../../interfaces/users.interfaces";
 import { client } from "../../database";
 import format from "pg-format";
 
-const updateUserService= async( 
-    userId:number, 
-    userData:TUserUpdateRequest
-    ):Promise<TUserResponse> =>{
-        const queryString:string = format(
-            `
+const updateUserService = async (
+  userId: number,
+  userData: TUserUpdateRequest
+): Promise<TUserResponse> => {
+  const queryString: string = format(
+    `
             UPDATE 
                 users
                 SET(%I) = ROW(%L)
@@ -19,19 +23,18 @@ const updateUserService= async(
 
             
             `,
-            Object.keys(userData),
-            Object.values(userData)
+    Object.keys(userData),
+    Object.values(userData)
+  );
 
-        )
+  const queryConfig: QueryConfig = {
+    text: queryString,
+    values: [userId],
+  };
+  const queryResult: QueryResult<TUserResponse> = await client.query(
+    queryConfig
+  );
 
-        const  queryConfig:QueryConfig ={
-            text: queryString,
-            values:[userId]
-        }
-        const queryResult:QueryResult<TUserResponse> = await client.query(
-            queryConfig
-        )
-
-        return queryResult.rows[0]
-    }
-    export default updateUserService
+  return queryResult.rows[0];
+};
+export default updateUserService;

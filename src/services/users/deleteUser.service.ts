@@ -1,26 +1,35 @@
-import { QueryConfig } from "pg";
+import { QueryConfig, QueryResult } from "pg";
+import {
+  TUserRequest,
+  TUserResponse,
+  TUserUpdateRequest,
+} from "../../interfaces/users.interfaces";
 import { client } from "../../database";
-import { Request,Response } from "express";
+import format from "pg-format";
 
+const deleteUserService = async (
+  userId: number
+): Promise<void> => {
+  const queryString: string = 
+    `
+    UPDATE 
+      users
+    SET
+       active=false
+    WHERE
+     id=$1;
 
-const deleteUser = async (
-    request: Request,
-    response: Response
-  ): Promise<Response> => {
-    const userId:number=parseInt(request.params.id)
-
-    const queryString: string = `
-      DELETE FROM
-          developers
-      WHERE
-          "id"=$1
+            
+            `
   
-      `;
-    const queryConfig: QueryConfig = {
-      text: queryString,
-      values: [userId],
-    };
-    await client.query(queryConfig);
-  
-    return response.status(204).send();
+  const queryConfig: QueryConfig = {
+    text: queryString,
+    values: [userId],
   };
+  const queryResult: QueryResult<TUserResponse> = await client.query(
+    queryConfig
+  );
+
+  
+};
+export default deleteUserService;

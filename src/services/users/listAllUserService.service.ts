@@ -3,26 +3,14 @@ import { TUserResponse } from "../../interfaces/users.interfaces";
 import { client } from "../../database";
 import { AppError } from "../../error";
 import jwt from "jsonwebtoken";
-import "dotenv/config"
+import "dotenv/config";
 import { requestAllUsersSchema } from "../../schemas/users.schemas";
 
-const listAllUserService = async(
-    // token:string|undefined
-    ):Promise<Array<TUserResponse>> =>{
-    // if(!token){
-    //     throw new AppError("Token is missing!",401)
-    // }
-    //     token= token.split(" ")[1]
-
-    // jwt.verify(token,process.env.SECRET_KEY!,(err:any,decoded:any)=>{
-    //     if(err){
-    //         throw new AppError(err.message,403)
-    //     }
-    // })
+const listAllUserService = async (): 
+Promise<Array<TUserResponse>> => {
 
 
-    const queryString:string = 
-    `
+  const queryString: string = `
     SELECT
         "id",
         "name",
@@ -33,11 +21,10 @@ const listAllUserService = async(
         users;
     `;
 
-    const queryResult:QueryResult<TUserResponse> = await client.query(
-        queryString
-    );
-    const users: TUserResponse[]= requestAllUsersSchema.parse(queryResult.rows)
-    return queryResult.rows;
-
+  const queryResult: QueryResult<TUserResponse> = await client.query(
+    queryString
+  );
+  const users: TUserResponse[] = requestAllUsersSchema.parse(queryResult.rows);
+  return queryResult.rows;
 };
-export default listAllUserService
+export default listAllUserService;

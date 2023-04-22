@@ -1,22 +1,61 @@
-import { Router } from 'express';
-import {createUsersController, idUserController, listUserController, updateUserController } from '../controllers/users.controllers';
-import { tokenUserExistsMiddlewate } from '../middlewares/tokenUserExistsMiddlewate.middleware';
-import { permitionTokenUserExistsMiddlewate } from '../middlewares/permissionUserExistsMiddleware.middleware';
+import { Router } from "express";
+import {
+  createUsersController,
+  deleteUserController,
+  idUserController,
+  listUserController,
+  recoverUserController,
+  updateUserController,
+} from "../controllers/users.controllers";
+import { tokenUserExistsMiddlewate } from "../middlewares/tokenUserExistsMiddlewate.middleware";
+import { permitionTokenAdminMiddlewate } from "../middlewares/permissionUserExistsMiddleware.middleware";
+import { idUserMiddlewareExists } from "../middlewares/idUserExists.middleware";
+import { verificationBodyIsValidMiddleware } from "../middlewares/verificationBodyIsValidMiddleware.middleware";
+import { requestUserSchema, userSchemaPostUser, userSchemaUpdate } from "../schemas/users.schemas";
+import { emailUserExistsMiddleware } from "../middlewares/emailUserExistsMiddleware.middleware";
 
-import { idUserMiddlewareExists } from '../middlewares/idUserExists.middleware';
-import { verificationBodyIsValidMiddleware } from '../middlewares/verificationBodyIsValidMiddleware.middleware';
-import { requestUserSchema } from '../schemas/users.schemas';
-const userRoutes:Router = Router()
+const userRoutes: Router = Router();
 
-userRoutes.post('/users',createUsersController)
-userRoutes.post('/login')
 
-userRoutes.get('/users/',tokenUserExistsMiddlewate,permitionTokenUserExistsMiddlewate,listUserController)
-userRoutes.get('/users/profile',idUserMiddlewareExists,tokenUserExistsMiddlewate,idUserController)
+userRoutes.post("", verificationBodyIsValidMiddleware(userSchemaPostUser),emailUserExistsMiddleware,createUsersController);
 
-userRoutes.patch('/:id',idUserMiddlewareExists,tokenUserExistsMiddlewate,verificationBodyIsValidMiddleware(requestUserSchema),updateUserController)
-userRoutes.delete('/users/:id',idUserMiddlewareExists,tokenUserExistsMiddlewate)
-userRoutes.put('users/:id/recover',idUserMiddlewareExists,permitionTokenUserExistsMiddlewate,tokenUserExistsMiddlewate)
+userRoutes.get(
+  "",
+  tokenUserExistsMiddlewate,
+  permitionTokenAdminMiddlewate,
+  listUserController
+);
+userRoutes.get(
+  "/profile",
+  tokenUserExistsMiddlewate,
+  idUserController
+);
 
-export default userRoutes
+userRoutes.patch(
+  "/:id",
+  tokenUserExistsMiddlewate,
+  permitionTokenAdminMiddlewate,
+  idUserMiddlewareExists,
+  verificationBodyIsValidMiddleware(userSchemaUpdate),
+  emailUserExistsMiddleware,
+  updateUserController
+);
+userRoutes.delete(
+  "/:id",
+  tokenUserExistsMiddlewate,
+  permitionTokenAdminMiddlewate,
+  idUserMiddlewareExists,
+  deleteUserController
+  
+);
+userRoutes.put(
+  "/:id/recover",
+  tokenUserExistsMiddlewate,
+  permitionTokenAdminMiddlewate,
+  idUserMiddlewareExists,
+  recoverUserController
 
+
+);
+
+export default userRoutes;
