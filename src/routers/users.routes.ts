@@ -46,7 +46,6 @@ userRoutes.delete(
   permitionTokenAdminMiddlewate,
   idUserMiddlewareExists,
   deleteUserController
-  
 );
 userRoutes.put(
   "/:id/recover",
