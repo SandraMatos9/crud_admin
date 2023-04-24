@@ -10,7 +10,7 @@ import listAllUserService from "../services/users/listAllUserService.service";
 import updateUserService from "../services/users/updateUser.service";
 import idUserService from "../services/users/idUser.service"
 import deleteUserService from "../services/users/deleteUser.service"
-import recoverUserService from "../services/users/putUser.service"
+import recoverUserService from "../services/users/recoverUser.service"
 
 const createUsersController = async (
   req: Request,
